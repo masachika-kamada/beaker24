@@ -49,10 +49,14 @@ def main():
     ret = sidebar()
 
     if ret is not None:
-        data = ["かばん, 1kg, 1000円", "靴, 500g, 7000円"]
+        data = [["かばん", "1kg", "1000円",
+                 "https://image.rakuten.co.jp/e-smart/cabinet/shohin11/b-to-b-6936.jpg"],
+                ["靴", "500g", "7000円",
+                 "https://image.rakuten.co.jp/hype/cabinet/sgazo29/7992844_1.jpg"]]
         for i in range(len(data)):
+            st.image(data[i][-1], width=400)
             expander = st.expander(f"プレゼント候補{i + 1}の詳細")
-            expander.write(data[i])
+            expander.write(data[i][:-1])
 
 
 if __name__ == "__main__":
