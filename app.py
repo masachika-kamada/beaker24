@@ -27,7 +27,7 @@ def sidebar():
         )
         category = st.radio(
             "カテゴリ",
-            ("", "", "")
+            ("", "", "")  # 追加必要
         )
         days = st.radio(
             "プレゼントが届くまでの時間",
@@ -49,6 +49,7 @@ def main():
     ret = sidebar()
 
     if ret is not None:
+        # サンプルデータ
         data = [["かばん", "1kg", "1000円",
                  "https://image.rakuten.co.jp/e-smart/cabinet/shohin11/b-to-b-6936.jpg"],
                 ["靴", "500g", "7000円",
