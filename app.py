@@ -27,9 +27,9 @@ def sidebar():
         )
         category = st.radio(
             "カテゴリ",
-            ("", "", "")  # 追加必要
+            ("レディースファッション", "メンズファッション", "日用品雑貨・文房具・手芸")  # 追加必要
         )
-        category = 551177
+        # category = 551177
 
         # asurakuflag = st.checkbox('翌日配達を望む')
         # if asurakuflag:
@@ -79,6 +79,13 @@ def main():
         elif(ret[0] == "1万円以上"):
             Search_info.append(10000)
             Search_info.append(999999999)
+        
+        if(ret[1] == "レディースファッション"):
+            Search_info.append(100371)
+        elif(ret[1] == "メンズファッション"):
+            Search_info.append(551177)
+        elif(ret[1] == "日用品雑貨・文房具・手芸"):
+            Search_info.append(215783)
         
         Search_info.append(ret[1])
         # Search_info.append(ret[2])
