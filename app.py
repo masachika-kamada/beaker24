@@ -77,12 +77,10 @@ def main():
         # Search_info.append(ret[2])
         print(Search_info)
 
-        # サンプルデータ
-        data = api.main()
-        data = [["かばん", "1kg", "1000円",
-                 "https://image.rakuten.co.jp/e-smart/cabinet/shohin11/b-to-b-6936.jpg"],
-                ["靴", "500g", "7000円",
-                 "https://image.rakuten.co.jp/hype/cabinet/sgazo29/7992844_1.jpg"]]
+        #api.pyで検索
+        data = api.main(Search_info)
+        
+        #出力
         for i in range(len(data)):
             st.image(data[i][-1], width=400)
             expander = st.expander(f"プレゼント候補{i + 1}の詳細")
@@ -91,3 +89,23 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+# print(str(data["商品画像URL"]))
+#         URL = str(data["商品画像URL"])
+#         NURL = URL.split("'")
+#         for i in range(len(NURL)):
+#             if ("https" in NURL[i]):
+#                 tmp = str(NURL[i])
+#                 MURL = tmp.split(".")
+#                 print(MURL)
+#                 break
+
+# サンプルデータ
+        # data = [["かばん", "1kg", "1000円",
+        #          "https://image.rakuten.co.jp/e-smart/cabinet/shohin11/b-to-b-6936.jpg"],
+        #         ["靴", "500g", "7000円",
+        #          "https://image.rakuten.co.jp/hype/cabinet/sgazo29/7992844_1.jpg"]]
