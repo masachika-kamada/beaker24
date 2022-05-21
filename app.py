@@ -26,10 +26,10 @@ def sidebar(search_options):
             ("レディースファッション", "メンズファッション", "日用品雑貨・文房具・手芸")  # 追加必要
         )
         next_day_delivery = st.radio(
-            '翌日配送',
-            ('指定なし', '希望')
+            "翌日配送",
+            ("指定なし", "希望")
         )
-        if next_day_delivery == '希望':
+        if next_day_delivery == "希望":
             prefec = st.selectbox(
                 "配送先の都道府県を選んでください",
                 prefec_codes.keys())
@@ -55,14 +55,14 @@ def main():
 
         if len(itemname) != 0:
             # 出力
-            for i in range(len(itemname['商品名'])):
+            for i in range(len(itemname["商品名"])):
                 st.image(imageurl[i], width=400)
                 expander = st.expander(f"プレゼント候補{i + 1}の詳細")
-                expander.markdown('###### 商品：' + itemname['商品名'][i + 1])
-                expander.markdown('###### レビュー({}件)：'.format(
-                    str(reviewcount['レビュー件数'][i + 1])) + str(review['レビュー'][i + 1]))
+                expander.markdown("###### 商品：" + itemname["商品名"][i + 1])
+                expander.markdown("###### レビュー({}件)：".format(
+                    str(reviewcount["レビュー件数"][i + 1])) + str(review["レビュー"][i + 1]))
                 expander.markdown(
-                    '商品URL：' + itemurl['商品URL'][i + 1], unsafe_allow_html=True)
+                    "商品URL：" + itemurl["商品URL"][i + 1], unsafe_allow_html=True)
         else:
             st.write("お求めの商品はありませんでした。")
     st.image("https://webservice.rakuten.co.jp/img/credit_31130.gif")

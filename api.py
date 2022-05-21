@@ -43,23 +43,23 @@ def search_product(search_options):
 
     # 出力パラメータ―を指定
     item_key = [
-        'itemName',
-        'mediumImageUrls',
-        'itemUrl',
-        'reviewAverage',
-        'reviewCount']
+        "itemName",
+        "mediumImageUrls",
+        "itemUrl",
+        "reviewAverage",
+        "reviewCount"]
 
     item_list = []
-    for i in range(0, len(json_result['Items'])):
+    for i in range(0, len(json_result["Items"])):
         tmp_item = {}
-        item = json_result['Items'][i]['Item']
+        item = json_result["Items"][i]["Item"]
         for key, value in item.items():
             if key in item_key:
                 tmp_item[key] = value
         item_list.append(tmp_item.copy())
 
     # データフレームの表示の省略化を無効化
-    pd.set_option('display.max_colwidth', 1000)
+    pd.set_option("display.max_colwidth", 1000)
 
     # データフレームを作成
     items_df = pd.DataFrame(item_list)
@@ -67,28 +67,28 @@ def search_product(search_options):
     # 列の順番を入れ替える
     items_df = items_df.reindex(
         columns=[
-            'itemName',
-            'mediumImageUrls',
-            'itemUrl',
-            'reviewAverage',
-            'reviewCount'])
+            "itemName",
+            "mediumImageUrls",
+            "itemUrl",
+            "reviewAverage",
+            "reviewCount"])
 
     # 列名と行番号を変更する:列名は日本語に、行番号は1からの連番にする
-    items_df.columns = ['商品名', '商品画像URL', '商品URL', 'レビュー', 'レビュー件数']
+    items_df.columns = ["商品名", "商品画像URL", "商品URL", "レビュー", "レビュー件数"]
     items_df.index = np.arange(1, len(items_df) + 1)
 
     imageurl = []
     for i in range(1, len(items_df) + 1):
-        f_1 = items_df.loc[i, ['商品画像URL']]
+        f_1 = items_df.loc[i, ["商品画像URL"]]
         f_2 = f_1.values.tolist()
         f_3 = f_2[0][0]
-        f_4 = f_3['imageUrl']
-        f_5 = f_4.replace('?_ex=128x128', '')
+        f_4 = f_3["imageUrl"]
+        f_5 = f_4.replace("?_ex=128x128", "")
         imageurl.append(f_5)
 
-    itemname = items_df.loc[:, ['商品名']]
-    itemurl = items_df.loc[:, ['商品URL']]
-    review = items_df.loc[:, ['レビュー']]
-    reviewcount = items_df.loc[:, ['レビュー件数']]
+    itemname = items_df.loc[:, ["商品名"]]
+    itemurl = items_df.loc[:, ["商品URL"]]
+    review = items_df.loc[:, ["レビュー"]]
+    reviewcount = items_df.loc[:, ["レビュー件数"]]
 
     return(itemname, imageurl, itemurl, review, reviewcount)

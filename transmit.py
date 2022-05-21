@@ -20,9 +20,9 @@ class SearchOptions:
         elif category == "日用品雑貨・文房具・手芸":
             self.genreId = 215783
 
-        if next_day_delivery == '希望':
+        if next_day_delivery == "希望":
             self.asurakuFlag = 1
             self.asurakuArea = prefec_code
-        elif next_day_delivery == '指定なし':
+        elif next_day_delivery == "指定なし":
             self.asurakuFlag = 0
             self.asurakuArea = 0
