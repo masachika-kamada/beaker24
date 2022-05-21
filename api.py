@@ -12,7 +12,7 @@ string : asurakuarea  （県名を～県で）エラー吐くので一旦停止�
 string : genreid
 """
 #566382
-def api(minprice,maxprice,genreid,asurakuflag, asurakuarea):    # 引数(budget, asuraku, category)
+def api(minprice,maxprice,genreid,asurakuflag, asurakuarea, giftflag):    # 引数(budget, asuraku, category)
     #楽天商品検索APIリクエストURL
     url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706?"
     #入力パラメーターを指定
@@ -25,6 +25,7 @@ def api(minprice,maxprice,genreid,asurakuflag, asurakuarea):    # 引数(budget,
         "maxPrice"    : maxprice,
         "genreId"     : genreid,
         "asurakuFlag" : asurakuflag,
+        "giftFlag"    : giftflag
     }
     if asurakuflag != 0:
         param["asurakuArea"] = asurakuarea
@@ -36,7 +37,7 @@ def api(minprice,maxprice,genreid,asurakuflag, asurakuarea):    # 引数(budget,
     json_result = result.json()
 
     #出力パラメータ―を指定
-    item_key = ['itemName', 'mediumImageUrls', 'itemUrl', 'reviewAverage','reviewCount','asurakuFlag']
+    item_key = ['itemName', 'mediumImageUrls', 'itemUrl', 'reviewAverage','reviewCount','asurakuFlag', 'asurakuArea']
 
     item_list = []
     for i in range(0, len(json_result['Items'])):
@@ -54,10 +55,10 @@ def api(minprice,maxprice,genreid,asurakuflag, asurakuarea):    # 引数(budget,
     items_df = pd.DataFrame(item_list)
     
     # 列の順番を入れ替える
-    items_df = items_df.reindex(columns=['itemName', 'mediumImageUrls', 'itemUrl', 'reviewAverage', 'reviewCount', 'asurakuFlag'])
+    items_df = items_df.reindex(columns=['itemName', 'mediumImageUrls', 'itemUrl', 'reviewAverage', 'reviewCount', 'asurakuFlag', 'asurakuArea'])
 
     # 列名と行番号を変更する:列名は日本語に、行番号は1からの連番にする
-    items_df.columns = ['商品名', '商品画像URL', '商品URL', 'レビュー', 'レビュー件数', 'あす楽フラグ']
+    items_df.columns = ['商品名', '商品画像URL', '商品URL', 'レビュー', 'レビュー件数', 'あす楽フラグ', 'あす楽地域']
     items_df.index = np.arange(1, len(items_df)+1)
 
     imageurl = []
@@ -74,8 +75,9 @@ def api(minprice,maxprice,genreid,asurakuflag, asurakuarea):    # 引数(budget,
     review = items_df.loc[:, ['レビュー']]
     reviewcount = items_df.loc[:, ['レビュー件数']]
     asuraku = items_df.loc[:, ['あす楽フラグ']]
+    asurakuarea_api = items_df.loc[:, ['あす楽地域']]
     
-    return(itemname, imageurl, itemurl, review, reviewcount, asuraku)
+    return(itemname, imageurl, itemurl, review, reviewcount, asuraku, asurakuarea_api)
     
 if __name__ == "__main__":
     output = api()
