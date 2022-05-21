@@ -51,18 +51,15 @@ def main():
 
     if ret is not None:
         # api.pyで検索
-        itemname, imageurl, itemurl, review, reviewcount = search_product(search_options)
+        items = search_product(search_options)
 
-        if len(itemname) != 0:
-            # 出力
-            for i in range(len(itemname["商品名"])):
-                st.image(imageurl[i], width=400)
+        if len(items) != 0:
+            for i, item in enumerate(items):
+                st.image(item.imageUrl, width=400)
                 expander = st.expander(f"プレゼント候補{i + 1}の詳細")
-                expander.markdown("###### 商品：" + itemname["商品名"][i + 1])
-                expander.markdown("###### レビュー({}件)：".format(
-                    str(reviewcount["レビュー件数"][i + 1])) + str(review["レビュー"][i + 1]))
-                expander.markdown(
-                    "商品URL：" + itemurl["商品URL"][i + 1], unsafe_allow_html=True)
+                expander.markdown(f"###### 商品名：{item.itemName}")
+                expander.markdown(f"###### レビュー({item.n_review}件)：{item.review}")
+                expander.markdown(f"URL：{item.itemUrl}")
         else:
             st.write("お求めの商品はありませんでした。")
     st.image("https://webservice.rakuten.co.jp/img/credit_31130.gif")

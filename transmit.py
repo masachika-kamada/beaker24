@@ -26,3 +26,12 @@ class SearchOptions:
         elif next_day_delivery == "指定なし":
             self.asurakuFlag = 0
             self.asurakuArea = 0
+
+
+class SearchResult:
+    def __init__(self, item_name, item_url, image_url, review, n_review):
+        self.itemName = item_name
+        self.itemUrl = item_url
+        self.imageUrl = image_url
+        self.review = review
+        self.n_review = n_review
