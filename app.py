@@ -85,7 +85,7 @@ def main():
         print(Search_info[0],Search_info[1],Search_info[2])
 
         #api.pyで検索
-        itemname, imageurl, itemurl, review = api.api(Search_info[0],Search_info[1],Search_info[2])
+        itemname, imageurl, itemurl, review , reviewcount= api.api(Search_info[0],Search_info[1],Search_info[2])
 
         if (len(itemname) != 0):
             #サンプルデータ
@@ -99,7 +99,7 @@ def main():
                 st.image(imageurl[i], width=400)
                 expander = st.expander(f"プレゼント候補{i + 1}の詳細")
                 expander.markdown('###### 商品：'+ itemname['商品名'][i+1])
-                expander.markdown('###### レビュー：'+ str(review['レビュー'][i+1]))
+                expander.markdown('###### レビュー({}件)：'.format(str(reviewcount['レビュー件数'][i+1]))+ str(review['レビュー'][i+1]))
                 expander.markdown('商品URL：'+ itemurl['商品URL'][i+1], unsafe_allow_html=True)
         else:
             st.write("お求めの商品はありませんでした。")
