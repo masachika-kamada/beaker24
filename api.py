@@ -17,7 +17,7 @@ def api(minprice,maxprice,genreid,asurakuflag, asurakuarea):    # 引数(budget,
     url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706?"
     #入力パラメーターを指定
     param = {
-        "applicationId" : st.secrets.AzureApiKey.AppID,       #アプリIDを入力
+        "applicationId" : st.secrets.AppID,       #アプリIDを入力
         "keyword"     : "おもしろ雑貨",
         "format"      : "json",
         "imageFlag"   : 1,
