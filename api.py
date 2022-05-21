@@ -13,25 +13,30 @@ string : genreid
 """
 
 
-def api(minprice, maxprice, genreid, asurakuflag, asurakuarea):    # 引数(budget, asuraku, category)
+def search_product(search_options):
     # 楽天商品検索APIリクエストURL
     url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706?"
     # 入力パラメーターを指定
-    param = {
-        "applicationId": st.secrets.AppID,  # アプリIDを入力
+
+    # 開発用に追加、プルリク時に削除必須
+    with open("./secret.txt", "r") as f:
+        app_id = int(f.read())
+
+    params = {
+        "applicationId": app_id,  # st.secret.AppID
         "keyword": "おもしろ雑貨",
         "format": "json",
         "imageFlag": 1,
-        "minPrice": minprice,
-        "maxPrice": maxprice,
-        "genreId": genreid,
-        "asurakuFlag": asurakuflag,
+        "minPrice": search_options.minPrice,
+        "maxPrice": search_options.maxPrice,
+        "genreId": search_options.genreId,
+        "asurakuFlag": search_options.asurakuFlag,
     }
-    if asurakuflag != 0:
-        param["asurakuArea"] = asurakuarea
+    if search_options.asurakuFlag is True:
+        params["asurakuArea"] = search_options.asurakuArea
 
     # APIを実行して結果を取得する
-    result = requests.get(url, param)
+    result = requests.get(url, params)
 
     # jsonにデコードする
     json_result = result.json()
@@ -87,8 +92,3 @@ def api(minprice, maxprice, genreid, asurakuflag, asurakuarea):    # 引数(budg
     reviewcount = items_df.loc[:, ['レビュー件数']]
 
     return(itemname, imageurl, itemurl, review, reviewcount)
-
-
-if __name__ == "__main__":
-    output = api()
-    print(output)

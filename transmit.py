@@ -21,8 +21,8 @@ class SearchOptions:
             self.genreId = 215783
 
         if next_day_delivery == '希望':
-            self.asurakuFlag = True
+            self.asurakuFlag = 1
             self.asurakuArea = prefec_code
         elif next_day_delivery == '指定なし':
-            self.asurakuFlag = False
+            self.asurakuFlag = 0
             self.asurakuArea = 0

@@ -1,6 +1,6 @@
 import streamlit as st
-import api
 import json
+from api import search_product
 from transmit import SearchOptions
 
 
@@ -51,9 +51,9 @@ def main():
 
     if ret is not None:
         # api.pyで検索
-        itemname, imageurl, itemurl, review, reviewcount = api.api(search_options)
+        itemname, imageurl, itemurl, review, reviewcount = search_product(search_options)
 
-        if (len(itemname) != 0):
+        if len(itemname) != 0:
             # 出力
             for i in range(len(itemname['商品名'])):
                 st.image(imageurl[i], width=400)
