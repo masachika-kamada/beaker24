@@ -78,7 +78,7 @@ def main():
             Search_info.append(10000)
         elif(ret[0] == "1万円以上"):
             Search_info.append(10000)
-            Search_info.append(-1)
+            Search_info.append(999999999)
         
         Search_info.append(ret[1])
         # Search_info.append(ret[2])

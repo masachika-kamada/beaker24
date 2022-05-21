@@ -43,7 +43,7 @@ def api(minprice,maxprice,genreid):    # 引数(budget, asuraku, category)
         item = json_result['Items'][i]['Item']
         for key, value in item.items():
             if key in item_key:
-             tmp_item[key] = value
+                tmp_item[key] = value
         item_list.append(tmp_item.copy())
     
     # データフレームの表示の省略化を無効化
@@ -57,10 +57,10 @@ def api(minprice,maxprice,genreid):    # 引数(budget, asuraku, category)
 
     # 列名と行番号を変更する:列名は日本語に、行番号は1からの連番にする
     items_df.columns = ['商品名', '商品画像URL', '商品URL', 'レビュー']
-    items_df.index = np.arange(1, 31)
+    items_df.index = np.arange(1, len(items_df)+1)
 
     imageurl = []
-    for i in range(1, 31):
+    for i in range(1, len(items_df)+1):
         f_1 = items_df.loc[i, ['商品画像URL']]
         f_2 = f_1.values.tolist()
         f_3 = f_2[0][0]
