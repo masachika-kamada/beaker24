@@ -33,7 +33,7 @@ def sidebar():
 
         asurakuflag = st.radio(
             '翌日配送',
-            ('指定なし', '希望')
+            ('指定なし', '希望する')
         )
         if asurakuflag == '希望':
             asurakuarea = st.selectbox(
@@ -42,6 +42,11 @@ def sidebar():
             )
         else:
             asurakuarea = None
+            
+        wrapping = st.radio(
+            "ラッピング",
+            ('指定なし', '希望する')
+        )
         
         # days = st.radio(
         #     "プレゼントが届くまでの時間",
@@ -55,8 +60,7 @@ def sidebar():
 
     search_button = st.sidebar.button("検索")
     if search_button:
-        return budget, category, asurakuflag, asurakuarea
-                                # asurakuflag, asurakufarea
+        return budget, category, asurakuflag, asurakuarea, wrapping
 
 def main():
     st.title("誕生日プレゼントガチャ")
@@ -90,7 +94,7 @@ def main():
         elif(ret[1] == "日用品雑貨・文房具・手芸"):
             Search_info.append(215783)
             
-        if(ret[2] == '希望'):
+        if(ret[2] == '希望する'):
             Search_info.append(1)
         elif(ret[2] == '指定なし'):
             Search_info.append(0)
@@ -99,13 +103,19 @@ def main():
             Search_info.append(0)
         else:
             Search_info.append(prefectures[ret[3]])
+            
+        if(ret[4] == '希望する'):
+            Search_info.append(1)
+        elif(ret[4] == '指定なし'):
+            Search_info.append(0)
+        
         
         Search_info.append(ret[1])
         # Search_info.append(ret[2])
         print(Search_info[0],Search_info[1],Search_info[2])
 
         #api.pyで検索
-        itemname, imageurl, itemurl, review , reviewcount, asuraku= api.api(Search_info[0],Search_info[1],Search_info[2],Search_info[3],Search_info[4])
+        itemname, imageurl, itemurl, review , reviewcount, asuraku, asurakuarea_api = api.api(Search_info[0],Search_info[1],Search_info[2],Search_info[3],Search_info[4],Search_info[5])
 
         if (len(itemname) != 0):
             #サンプルデータ
@@ -125,6 +135,9 @@ def main():
                 expander.markdown('###### 商品：'+ itemname['商品名'][i+1])
                 expander.markdown('###### レビュー({}件)：'.format(str(reviewcount['レビュー件数'][i+1]))+ str(review['レビュー'][i+1]))
                 expander.markdown('###### 翌日配送：{}'.format(asurakuflag))
+                if asurakuflag == '可':
+                    expander.caption('～対象地域～')
+                    expander.caption(asurakuarea_api['あす楽地域'][i+1])
                 expander.markdown('商品URL：'+ itemurl['商品URL'][i+1], unsafe_allow_html=True)
                 
         else:
