@@ -11,7 +11,7 @@ string : asurakuarea  （県名を～県で）エラー吐くので一旦停止�
 string : genreid
 """
 #566382
-def api(minprice,maxprice,genreid):    # 引数(budget, asuraku, category)
+def api(minprice,maxprice,genreid,asurakuflag, asurakuarea):    # 引数(budget, asuraku, category)
     #楽天商品検索APIリクエストURL
     url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706?"
     #入力パラメーターを指定
@@ -22,11 +22,11 @@ def api(minprice,maxprice,genreid):    # 引数(budget, asuraku, category)
         "imageFlag"   : 1,
         "minPrice"    : minprice,
         "maxPrice"    : maxprice,
-        # "asurakuFlag" : asurakuflag,
-        #"asurakuArea" : asurakuarea,
-        "genreId"     : genreid
+        "genreId"     : genreid,
+        "asurakuFlag" : asurakuflag,
     }
-    
+    if asurakuflag != 0:
+        param["asurakuArea"] = asurakuarea
     
     # APIを実行して結果を取得する
     result = requests.get(url, param)
