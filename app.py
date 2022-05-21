@@ -1,5 +1,5 @@
 import streamlit as st
-import api as api
+import api
 
 def sidebar():
     # 検索条件設定
@@ -86,40 +86,24 @@ def main():
 
         #api.pyで検索
         itemname, imageurl, itemurl, review = api.api(Search_info[0],Search_info[1],Search_info[2])
-        print(review['レビュー'][1])
-        #サンプルデータ
-        # data = [["かばん", "1kg", "1000円",
-        #          "https://image.rakuten.co.jp/e-smart/cabinet/shohin11/b-to-b-6936.jpg"],
-        #         ["靴", "500g", "7000円",
-        #          "https://image.rakuten.co.jp/hype/cabinet/sgazo29/7992844_1.jpg"]]
-        
-        #出力
-        for i in range(len(itemname['商品名'])):
-            st.image(imageurl[i], width=400)
-            expander = st.expander(f"プレゼント候補{i + 1}の詳細")
-            expander.markdown('###### 商品：'+ itemname['商品名'][i+1])
-            expander.markdown('###### レビュー：'+ str(review['レビュー'][i+1]))
-            expander.text('商品URL：'+ itemurl['商品URL'][i+1])
+
+        if (len(itemname) != 0):
+            #サンプルデータ
+            # data = [["かばん", "1kg", "1000円",
+            #          "https://image.rakuten.co.jp/e-smart/cabinet/shohin11/b-to-b-6936.jpg"],
+            #         ["靴", "500g", "7000円",
+            #          "https://image.rakuten.co.jp/hype/cabinet/sgazo29/7992844_1.jpg"]]
+            
+            #出力
+            for i in range(len(itemname['商品名'])):
+                st.image(imageurl[i], width=400)
+                expander = st.expander(f"プレゼント候補{i + 1}の詳細")
+                expander.markdown('###### 商品：'+ itemname['商品名'][i+1])
+                expander.markdown('###### レビュー：'+ str(review['レビュー'][i+1]))
+                expander.markdown('商品URL：'+ itemurl['商品URL'][i+1], unsafe_allow_html=True)
+        else:
+            st.write("お求めの商品はありませんでした。")
     st.image("https://webservice.rakuten.co.jp/img/credit_31130.gif")
 
 if __name__ == "__main__":
     main()
-
-
-
-
-# print(str(data["商品画像URL"]))
-#         URL = str(data["商品画像URL"])
-#         NURL = URL.split("'")
-#         for i in range(len(NURL)):
-#             if ("https" in NURL[i]):
-#                 tmp = str(NURL[i])
-#                 MURL = tmp.split(".")
-#                 print(MURL)
-#                 break
-
-# サンプルデータ
-        # data = [["かばん", "1kg", "1000円",
-        #          "https://image.rakuten.co.jp/e-smart/cabinet/shohin11/b-to-b-6936.jpg"],
-        #         ["靴", "500g", "7000円",
-        #          "https://image.rakuten.co.jp/hype/cabinet/sgazo29/7992844_1.jpg"]]
