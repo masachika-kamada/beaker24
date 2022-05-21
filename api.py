@@ -17,12 +17,8 @@ def search_product(search_options):
     image_url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706?"
     # 入力パラメーターを指定
 
-    # 開発用に追加、プルリク時に削除必須
-    with open("./secret.txt", "r") as f:
-        app_id = int(f.read())
-
     params = {
-        "applicationId": app_id,  # st.secret.AppID
+        "applicationId": st.secret.AppID,
         "keyword": "おもしろ雑貨",
         "format": "json",
         "imageFlag": 1,
