@@ -33,7 +33,7 @@ def sidebar():
 
         asurakuflag = st.radio(
             '翌日配送',
-            ('希望', '指定なし')
+            ('指定なし', '希望')
         )
         if asurakuflag == '希望':
             asurakuarea = st.selectbox(
@@ -105,7 +105,7 @@ def main():
         print(Search_info[0],Search_info[1],Search_info[2])
 
         #api.pyで検索
-        itemname, imageurl, itemurl, review , reviewcount= api.api(Search_info[0],Search_info[1],Search_info[2],Search_info[3],Search_info[4])
+        itemname, imageurl, itemurl, review , reviewcount, asuraku= api.api(Search_info[0],Search_info[1],Search_info[2],Search_info[3],Search_info[4])
 
         if (len(itemname) != 0):
             #サンプルデータ
@@ -117,10 +117,16 @@ def main():
             #出力
             for i in range(len(itemname['商品名'])):
                 st.image(imageurl[i], width=400)
+                if asuraku['あす楽フラグ'][i + 1] == 0:
+                    asurakuflag = '不可'
+                else:
+                    asurakuflag = '可'
                 expander = st.expander(f"プレゼント候補{i + 1}の詳細")
                 expander.markdown('###### 商品：'+ itemname['商品名'][i+1])
                 expander.markdown('###### レビュー({}件)：'.format(str(reviewcount['レビュー件数'][i+1]))+ str(review['レビュー'][i+1]))
+                expander.markdown('###### 翌日配送：{}'.format(asurakuflag))
                 expander.markdown('商品URL：'+ itemurl['商品URL'][i+1], unsafe_allow_html=True)
+                
         else:
             st.write("お求めの商品はありませんでした。")
     st.image("https://webservice.rakuten.co.jp/img/credit_31130.gif")
