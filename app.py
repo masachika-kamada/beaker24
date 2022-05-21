@@ -1,5 +1,5 @@
 import streamlit as st
-import apitmp as api
+import api as api
 
 
 def sidebar():
@@ -30,7 +30,7 @@ def sidebar():
             "カテゴリ",
             ("", "", "")  # 追加必要
         )
-        category = None
+        category = 551167
 
         asurakuflag = st.checkbox('翌日配達を望む')
         if asurakuflag:
@@ -79,26 +79,26 @@ def main():
             Search_info.append(10000)
             Search_info.append(-1)
         
-        Search_info.append(str(ret[1]))
+        Search_info.append(ret[1])
         Search_info.append(ret[2])
         print(Search_info)
 
         #api.pyで検索
-        data = api.main(Search_info[0],Search_info[1],Search_info[2],Search_info[3])
+        data = api.api(Search_info[0],Search_info[1],Search_info[3],Search_info[2])
         
         #サンプルデータ
-        data = [["かばん", "1kg", "1000円",
-                 "https://image.rakuten.co.jp/e-smart/cabinet/shohin11/b-to-b-6936.jpg"],
-                ["靴", "500g", "7000円",
-                 "https://image.rakuten.co.jp/hype/cabinet/sgazo29/7992844_1.jpg"]]
+        # data = [["かばん", "1kg", "1000円",
+        #          "https://image.rakuten.co.jp/e-smart/cabinet/shohin11/b-to-b-6936.jpg"],
+        #         ["靴", "500g", "7000円",
+        #          "https://image.rakuten.co.jp/hype/cabinet/sgazo29/7992844_1.jpg"]]
         
         #出力
         for i in range(len(data)):
-            st.image(data[i][-1], width=400)
+            st.image(data[i][1], width=400)
             expander = st.expander(f"プレゼント候補{i + 1}の詳細")
             expander.markdown('###### 商品：'+ data[i][0])
-            expander.markdown('###### レビュー：'+ data[i][1])
-            expander.text('商品URL：'+ data[i][2])
+            expander.markdown('###### レビュー：'+ data[i][2])
+            expander.text('商品URL：'+ data[i][1])
     st.image("https://webservice.rakuten.co.jp/img/credit_31130.gif")
 
 
