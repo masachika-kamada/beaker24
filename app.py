@@ -1,9 +1,36 @@
 import streamlit as st
 import api
 import json
+import re
 
 
-def sidebar():
+class SearchOptions:
+    def set(self, budget, category, next_day_delivery, prefec_code):
+
+        budget = budget.replace("1万", "10000")
+        if "~" in budget:
+            budget = budget.split("~")
+            self.minPrice = int(re.sub(r"\D", "", budget[0]))
+            self.maxPrice = int(re.sub(r"\D", "", budget[1]))
+        else:  # "1万円以上"の選択肢には上限がない
+            self.minPrice = 10000
+            self.maxPrice = 99999999
+
+        if category == "レディースファッション":
+            self.genreId = 100371
+        elif category == "メンズファッション":
+            self.genreId = 551177
+        elif category == "日用品雑貨・文房具・手芸":
+            self.genreId = 215783
+
+        if next_day_delivery == '希望':
+            self.asurakuFlag = True
+            self.asurakuArea = prefec_code
+        elif next_day_delivery == '指定なし':
+            self.asurakuFlag = False
+
+
+def sidebar(search_options):
     # 検索条件設定
     st.sidebar.write("""
     # プレゼント設定
@@ -13,7 +40,7 @@ def sidebar():
     # 都道府県データの読み込み
     with open("./prefectures.json", mode="r", encoding="utf-8") as f:
         raw = f.read()
-        prefec = json.loads(raw)
+        prefec_codes = json.loads(raw)
 
     with st.sidebar:
         budget = st.radio(
@@ -24,70 +51,33 @@ def sidebar():
             "カテゴリ",
             ("レディースファッション", "メンズファッション", "日用品雑貨・文房具・手芸")  # 追加必要
         )
-        asurakuflag = st.radio(
+        next_day_delivery = st.radio(
             '翌日配送',
             ('指定なし', '希望')
         )
-        if asurakuflag == '希望':
-            asurakuarea = st.selectbox(
+        if next_day_delivery == '希望':
+            prefec = st.selectbox(
                 "配送先の都道府県を選んでください",
-                prefec.keys())
+                prefec_codes.keys())
+            prefec_code = prefec_codes[prefec]
         else:
-            asurakuarea = None
+            prefec_code = None
 
     search_button = st.sidebar.button("検索")
     if search_button:
-        return budget, category, asurakuflag, asurakuarea
+        search_options.set(budget, category, next_day_delivery, prefec_code)
+        return True
 
 
 def main():
     st.title("誕生日プレゼントガチャ")
 
-    ret = sidebar()
+    search_options = SearchOptions()
+    ret = sidebar(search_options)
 
     if ret is not None:
-        # プレゼントの予算
-        Search_info = []
-        if(ret[0] == "1000~3000円"):
-            Search_info.append(1000)
-            Search_info.append(3000)
-        elif(ret[0] == "3000~5000円"):
-            Search_info.append(3000)
-            Search_info.append(5000)
-        elif(ret[0] == "5000~7000円"):
-            Search_info.append(5000)
-            Search_info.append(7000)
-        elif(ret[0] == "7000~1万円"):
-            Search_info.append(7000)
-            Search_info.append(10000)
-        elif(ret[0] == "1万円以上"):
-            Search_info.append(10000)
-            Search_info.append(999999999)
-
-        if(ret[1] == "レディースファッション"):
-            Search_info.append(100371)
-        elif(ret[1] == "メンズファッション"):
-            Search_info.append(551177)
-        elif(ret[1] == "日用品雑貨・文房具・手芸"):
-            Search_info.append(215783)
-
-        if(ret[2] == '希望'):
-            Search_info.append(1)
-        elif(ret[2] == '指定なし'):
-            Search_info.append(0)
-
-        if(ret[3] is None):
-            Search_info.append(0)
-        else:
-            Search_info.append(prefectures[ret[3]])
-
-        Search_info.append(ret[1])
-        # Search_info.append(ret[2])
-        print(Search_info[0], Search_info[1], Search_info[2])
-
         # api.pyで検索
-        itemname, imageurl, itemurl, review, reviewcount = api.api(
-            Search_info[0], Search_info[1], Search_info[2], Search_info[3], Search_info[4])
+        itemname, imageurl, itemurl, review, reviewcount = api.api()
 
         if (len(itemname) != 0):
             # 出力
