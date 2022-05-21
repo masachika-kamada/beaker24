@@ -18,10 +18,9 @@ def api(minprice,maxprice,genreid,asurakuflag, asurakuarea):    # 引数(budget,
     #入力パラメーターを指定
     param = {
         "applicationId" : st.secrets.AppID,       #アプリIDを入力
-        "keyword"     : "おもしろ ユニーク",
+        "keyword"     : "おもしろ",
         "format"      : "json",
         "imageFlag"   : 1,
-        "orFlag"      : 1,
         "minPrice"    : minprice,
         "maxPrice"    : maxprice,
         "genreId"     : genreid,
