@@ -1,33 +1,7 @@
 import streamlit as st
 import api
 import json
-import re
-
-
-class SearchOptions:
-    def set(self, budget, category, next_day_delivery, prefec_code):
-
-        budget = budget.replace("1万", "10000")
-        if "~" in budget:
-            budget = budget.split("~")
-            self.minPrice = int(re.sub(r"\D", "", budget[0]))
-            self.maxPrice = int(re.sub(r"\D", "", budget[1]))
-        else:  # "1万円以上"の選択肢には上限がない
-            self.minPrice = 10000
-            self.maxPrice = 99999999
-
-        if category == "レディースファッション":
-            self.genreId = 100371
-        elif category == "メンズファッション":
-            self.genreId = 551177
-        elif category == "日用品雑貨・文房具・手芸":
-            self.genreId = 215783
-
-        if next_day_delivery == '希望':
-            self.asurakuFlag = True
-            self.asurakuArea = prefec_code
-        elif next_day_delivery == '指定なし':
-            self.asurakuFlag = False
+from transmit import SearchOptions
 
 
 def sidebar(search_options):
@@ -77,7 +51,7 @@ def main():
 
     if ret is not None:
         # api.pyで検索
-        itemname, imageurl, itemurl, review, reviewcount = api.api()
+        itemname, imageurl, itemurl, review, reviewcount = api.api(search_options)
 
         if (len(itemname) != 0):
             # 出力
