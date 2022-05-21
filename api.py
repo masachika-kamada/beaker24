@@ -16,7 +16,7 @@ def api(minprice,maxprice,genreid):    # 引数(budget, asuraku, category)
     url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706?"
     #入力パラメーターを指定
     param = {
-        "applicationId" : "",       #アプリIDを入力
+        "applicationId" : AppID,       #アプリIDを入力
         "keyword"     : "おもしろ雑貨",
         "format"      : "json",
         "imageFlag"   : 1,
@@ -35,7 +35,7 @@ def api(minprice,maxprice,genreid):    # 引数(budget, asuraku, category)
     json_result = result.json()
 
     #出力パラメータ―を指定
-    item_key = ['itemName', 'mediumImageUrls', 'itemUrl', 'reviewAverage']
+    item_key = ['itemName', 'mediumImageUrls', 'itemUrl', 'reviewAverage','reviewCount']
 
     item_list = []
     for i in range(0, len(json_result['Items'])):
@@ -53,10 +53,10 @@ def api(minprice,maxprice,genreid):    # 引数(budget, asuraku, category)
     items_df = pd.DataFrame(item_list)
     
     # 列の順番を入れ替える
-    items_df = items_df.reindex(columns=['itemName', 'mediumImageUrls', 'itemUrl', 'reviewAverage'])
+    items_df = items_df.reindex(columns=['itemName', 'mediumImageUrls', 'itemUrl', 'reviewAverage', 'reviewCount'])
 
     # 列名と行番号を変更する:列名は日本語に、行番号は1からの連番にする
-    items_df.columns = ['商品名', '商品画像URL', '商品URL', 'レビュー']
+    items_df.columns = ['商品名', '商品画像URL', '商品URL', 'レビュー', 'レビュー件数']
     items_df.index = np.arange(1, len(items_df)+1)
 
     imageurl = []
@@ -71,8 +71,9 @@ def api(minprice,maxprice,genreid):    # 引数(budget, asuraku, category)
     itemname = items_df.loc[:, ['商品名']]
     itemurl = items_df.loc[:, ['商品URL']]
     review = items_df.loc[:, ['レビュー']]
+    reviewcount = items_df.loc[:, ['レビュー件数']]
     
-    return(itemname, imageurl, itemurl, review)
+    return(itemname, imageurl, itemurl, review, reviewcount)
     
 if __name__ == "__main__":
     output = api()

@@ -27,9 +27,9 @@ def sidebar():
         )
         category = st.radio(
             "カテゴリ",
-            ("", "", "")  # 追加必要
+            ("レディースファッション", "メンズファッション", "日用品雑貨・文房具・手芸")  # 追加必要
         )
-        category = 551177
+        # category = 551177
 
         # asurakuflag = st.checkbox('翌日配達を望む')
         # if asurakuflag:
@@ -80,12 +80,19 @@ def main():
             Search_info.append(10000)
             Search_info.append(999999999)
         
+        if(ret[1] == "レディースファッション"):
+            Search_info.append(100371)
+        elif(ret[1] == "メンズファッション"):
+            Search_info.append(551177)
+        elif(ret[1] == "日用品雑貨・文房具・手芸"):
+            Search_info.append(215783)
+        
         Search_info.append(ret[1])
         # Search_info.append(ret[2])
         print(Search_info[0],Search_info[1],Search_info[2])
 
         #api.pyで検索
-        itemname, imageurl, itemurl, review = api.api(Search_info[0],Search_info[1],Search_info[2])
+        itemname, imageurl, itemurl, review , reviewcount= api.api(Search_info[0],Search_info[1],Search_info[2])
 
         if (len(itemname) != 0):
             #サンプルデータ
@@ -99,7 +106,7 @@ def main():
                 st.image(imageurl[i], width=400)
                 expander = st.expander(f"プレゼント候補{i + 1}の詳細")
                 expander.markdown('###### 商品：'+ itemname['商品名'][i+1])
-                expander.markdown('###### レビュー：'+ str(review['レビュー'][i+1]))
+                expander.markdown('###### レビュー({}件)：'.format(str(reviewcount['レビュー件数'][i+1]))+ str(review['レビュー'][i+1]))
                 expander.markdown('商品URL：'+ itemurl['商品URL'][i+1], unsafe_allow_html=True)
         else:
             st.write("お求めの商品はありませんでした。")
