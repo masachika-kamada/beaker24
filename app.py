@@ -33,15 +33,20 @@ def sidebar():
 
         asurakuflag = st.radio(
             '翌日配送',
-            ('希望', '指定なし')
+            ('指定なし', '希望する')
         )
-        if asurakuflag == '希望':
+        if asurakuflag == '希望する':
             asurakuarea = st.selectbox(
                 "配送先の都道府県を選んでください",
                 ('北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県', '茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県', '新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県', '静岡県', '愛知県', '三重県', '滋賀県', '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県', '鳥取県', '島根県', '岡山県', '広島県', '山口県', '徳島県', '香川県', '愛媛県', '高知県', '福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県')
             )
         else:
             asurakuarea = None
+            
+        wrapping = st.radio(
+            "ラッピング",
+            ('指定なし', '希望する')
+        )
         
         # days = st.radio(
         #     "プレゼントが届くまでの時間",
@@ -55,8 +60,7 @@ def sidebar():
 
     search_button = st.sidebar.button("検索")
     if search_button:
-        return budget, category, asurakuflag, asurakuarea
-                                # asurakuflag, asurakufarea
+        return budget, category, asurakuflag, asurakuarea, wrapping
 
 def main():
     st.title("誕生日プレゼントガチャ")
@@ -90,7 +94,7 @@ def main():
         elif(ret[1] == "日用品雑貨・文房具・手芸"):
             Search_info.append(215783)
             
-        if(ret[2] == '希望'):
+        if(ret[2] == '希望する'):
             Search_info.append(1)
         elif(ret[2] == '指定なし'):
             Search_info.append(0)
@@ -99,13 +103,19 @@ def main():
             Search_info.append(0)
         else:
             Search_info.append(prefectures[ret[3]])
+            
+        if(ret[4] == '希望する'):
+            Search_info.append(1)
+        elif(ret[4] == '指定なし'):
+            Search_info.append(0)
+        
         
         Search_info.append(ret[1])
         # Search_info.append(ret[2])
         print(Search_info[0],Search_info[1],Search_info[2])
 
         #api.pyで検索
-        itemname, imageurl, itemurl, review , reviewcount= api.api(Search_info[0],Search_info[1],Search_info[2],Search_info[3],Search_info[4])
+        itemname, imageurl, itemurl, review , reviewcount, asuraku, asurakuarea_api = api.api(Search_info[0],Search_info[1],Search_info[2],Search_info[3],Search_info[4],Search_info[5])
 
         if (len(itemname) != 0):
             #サンプルデータ
@@ -117,10 +127,19 @@ def main():
             #出力
             for i in range(len(itemname['商品名'])):
                 st.image(imageurl[i], width=400)
+                if asuraku['あす楽フラグ'][i + 1] == 0:
+                    asurakuflag = '不可'
+                else:
+                    asurakuflag = '可'
                 expander = st.expander(f"プレゼント候補{i + 1}の詳細")
                 expander.markdown('###### 商品：'+ itemname['商品名'][i+1])
                 expander.markdown('###### レビュー({}件)：'.format(str(reviewcount['レビュー件数'][i+1]))+ str(review['レビュー'][i+1]))
+                expander.markdown('###### 翌日配送：{}'.format(asurakuflag))
+                if asurakuflag == '可':
+                    expander.caption('～対象地域～')
+                    expander.caption(asurakuarea_api['あす楽地域'][i+1])
                 expander.markdown('商品URL：'+ itemurl['商品URL'][i+1], unsafe_allow_html=True)
+                
         else:
             st.write("お求めの商品はありませんでした。")
     st.image("https://webservice.rakuten.co.jp/img/credit_31130.gif")
