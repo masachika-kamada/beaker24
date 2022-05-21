@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 import numpy as np
+import streamlit as st
 
 """
 long : minprice
@@ -16,7 +17,7 @@ def api(minprice,maxprice,genreid,asurakuflag, asurakuarea):    # 引数(budget,
     url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706?"
     #入力パラメーターを指定
     param = {
-        "applicationId" : AppID,       #アプリIDを入力
+        "applicationId" : st.secrets.AzureApiKey.AppID,       #アプリIDを入力
         "keyword"     : "おもしろ雑貨",
         "format"      : "json",
         "imageFlag"   : 1,
