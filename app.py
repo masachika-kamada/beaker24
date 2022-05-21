@@ -27,23 +27,23 @@ def sidebar(search_options):
         )
         next_day_delivery = st.radio(
             "翌日配送",
-            ("指定なし", "希望")
+            ("指定なし", "希望する")
         )
-        if next_day_delivery == "希望":
+        if next_day_delivery == "希望する":
             prefec = st.selectbox(
                 "配送先の都道府県を選んでください",
                 prefec_codes.keys())
             prefec_code = prefec_codes[prefec]
         else:
             prefec_code = None
-        wrapping = st.radio(  # conflictでクラスに追加できていない
+        wrapping = st.radio(
             "ラッピング",
             ('指定なし', '希望する')
         )
 
     search_button = st.sidebar.button("検索")
     if search_button:
-        search_options.set(budget, category, next_day_delivery, prefec_code)  # wrappingを追加
+        search_options.set(budget, category, next_day_delivery, prefec_code, wrapping)
         return True
 
 
@@ -60,22 +60,14 @@ def main():
         if len(items) != 0:
             for i, item in enumerate(items):
                 st.image(item.imageUrl, width=400)
-                expander = st.expander(f"プレゼント候補{i + 1}の詳細")
+                expander = st.expander(f"プレゼント候補 {i + 1} の詳細")
                 expander.markdown(f"###### 商品名：{item.itemName}")
                 expander.markdown(f"###### レビュー({item.n_review}件)：{item.review}")
                 expander.markdown(f"URL：{item.itemUrl}")
-
-                """ この部分conflictでエラー出るので修正
-                if asuraku['あす楽フラグ'][i + 1] == 0:
-                    asurakuflag = '不可'
-                else:
-                    asurakuflag = '可'
-                expander.markdown('###### 翌日配送：{}'.format(asurakuflag))
-                if asurakuflag == '可':
-                    expander.caption('～対象地域～')
-                    expander.caption(asurakuarea_api['あす楽地域'][i+1])
-                """
-
+                expander.markdown(f"###### 翌日配送：{item.nextDayDelivery}")
+                if item.nextDayDelivery == "可":
+                    expander.caption("～対象地域～")
+                    expander.caption(item.asurakuArea)
         else:
             st.write("お求めの商品はありませんでした。")
     st.image("https://webservice.rakuten.co.jp/img/credit_31130.gif")

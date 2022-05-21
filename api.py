@@ -16,7 +16,6 @@ def search_product(search_options):
     # 楽天商品検索APIリクエストURL
     image_url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706?"
     # 入力パラメーターを指定
-
     params = {
         "applicationId": st.secret.AppID,
         "keyword": "おもしろ",
@@ -26,7 +25,7 @@ def search_product(search_options):
         "maxPrice": search_options.maxPrice,
         "genreId": search_options.genreId,
         "asurakuFlag": search_options.asurakuFlag,
-        # "giftFlag"    : giftflag  # conflictエラーで修正必要
+        "giftFlag": search_options.giftFlag
     }
     if search_options.asurakuFlag is True:
         params["asurakuArea"] = search_options.asurakuArea
@@ -49,8 +48,9 @@ def reshape_result(json_result):
         image_url = image_urls[0]["imageUrl"].replace("?_ex=128x128", "")
         review = item["reviewAverage"]
         n_review = item["reviewCount"]
-        # 'asurakuFlag', 'asurakuArea'の追加が必要
+        asuraku_flag = item["asurakuFlag"]
+        asuraku_area = item["asurakuArea"]
         search_result = SearchResult(
-            item_name, item_url, image_url, review, n_review)
+            item_name, item_url, image_url, review, n_review, asuraku_flag, asuraku_area)
         item_list.append(search_result)
     return item_list
