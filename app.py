@@ -2,15 +2,17 @@ import streamlit as st
 import json
 from api import search_product
 from transmit import SearchOptions
+import streamlit.components.v1 as stc
 
 
 def sidebar(search_options):
     # 検索条件設定
-    st.sidebar.write("""
+    #st.sidebar.write("""
     # プレゼント設定
-    プレゼントを贈る相手に喜んでもらえるように、条件を絞りましょう。
-    """)
-
+    #プレゼントを贈る相手に喜んでもらえるように、条件を絞りましょう。
+    #""")
+    
+        
     # 都道府県データの読み込み
     with open("./prefectures.json", mode="r", encoding="utf-8") as f:
         raw = f.read()
@@ -22,6 +24,22 @@ def sidebar(search_options):
         category_codes = json.loads(raw)
 
     with st.sidebar:
+        stc.html("""
+        <head>
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">  
+        </head>
+        <div class = "sidebar">      
+          <h1>プレゼント設定</h1>
+          <p>プレゼントを贈る相手に喜んでもらえるように、条件を絞りましょう。</p>
+        </div>
+        <style>
+          .sidebar{
+              font-family: 'Hachi Maru Pop', cursive;
+          }
+        </style>
+        """)    
         budget = st.radio(
             "プレゼントの予算",
             ("1000~3000円", "3000~5000円", "5000~7000円", "7000~1万円", "1万円以上")
@@ -54,7 +72,81 @@ def sidebar(search_options):
 
 
 def main():
-    st.title("誕生日プレゼントガチャ")
+    #st.title("誕生日プレゼントガチャ")
+    stc.html("""
+    <head>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">  
+    </head>
+    <body>
+        <div class = "box14">
+          <h1>　　フ<span class =  "char1">ァ</span>ニ<span class = "char2">ー</span>プレゼントアドバイザ<span class = "char3">ー</span></h1>
+        </div>
+
+        <div class = "title">
+          <div class = "intro">
+            <a>ひだりうえのさんかくっぽいやつをおしてねぇ。</a>
+            <div class = "rotate">&#9756;</div>
+          </div>          
+        </div>
+    </body>
+
+    <style>
+    body{
+     font-family: 'Hachi Maru Pop', cursive;
+    }
+    .char1{
+        color:#00CDEA;
+    }
+    .char2{
+        color:#00CDEA;
+    }
+    .char3{
+        color:#00CDEA;
+    }
+    .rotate{
+      position:absolute;
+      left:0;
+      top:5px;
+      font-size:40px;
+      color:white;
+      transition:5s all;
+    }
+    a{
+        color:black;
+    }
+    a:hover{
+        color:#FFF218;
+    }
+    a:hover + .rotate{
+        color:#00CDEA;
+        transform:rotate(405deg);
+    }
+    
+    .title{
+        width:75%;
+        height:100px;
+    }
+    .box14{
+        width:100%;
+        height:50px;
+        padding:0em 1em;
+        margin: 0 0;
+        color: #FF4E63;
+        backgroud: #d6ebff;
+        border-bottom: solid 6px #FFF218;
+        border-radius: 9px;
+    }
+    .box14 h1{
+        margin:0;
+        padding:0;
+        font-size:40px;   
+    }
+    </style>
+    """
+    )
+    
 
     search_options = SearchOptions()
     ret = sidebar(search_options)
