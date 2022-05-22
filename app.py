@@ -1,129 +1,171 @@
 import streamlit as st
-import api
+import json
+from api import search_product
+from transmit import SearchOptions
+import streamlit.components.v1 as stc
 
-def sidebar():
-    # 検索条件設定
-    st.sidebar.write("""
-    # プレゼント設定
-    プレゼントを贈る相手に喜んでもらえるように、条件を絞りましょう。
-    """)
+
+def sidebar(search_options):
+    
+        
+    # 都道府県データの読み込み
+    with open("./prefectures.json", mode="r", encoding="utf-8") as f:
+        raw = f.read()
+        prefec_codes = json.loads(raw)
+
+    # カテゴリデータの読み込み
+    with open("./categories.json", mode="r", encoding="utf-8") as f:
+        raw = f.read()
+        category_codes = json.loads(raw)
 
     with st.sidebar:
-        # target = st.radio(
-        #     "誰に贈りますか？",
-        #     ("家族", "友人", "恋人")
-        # )
-        # sex = st.radio(
-        #     "贈り相手の性別",
-        #     ("男性", "女性", "その他")
-        # )
-        # old = st.radio(
-        #     "贈り相手の年齢",
-        #     ("0~10歳", "10~20歳", "20~30歳", "30~40歳")
-        # )
+        stc.html("""
+        <head>
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">  
+        </head>
+        <div class = "sidebar">      
+          <h1>プレゼント設定</h1>
+          <p>プレゼントを贈る相手に喜んでもらえるように、条件を絞りましょう。</p>
+        </div>
+        <style>
+          .sidebar{
+              font-family: 'Hachi Maru Pop', cursive;
+          }
+        </style>
+        """)
+
         budget = st.radio(
             "プレゼントの予算",
             ("1000~3000円", "3000~5000円", "5000~7000円", "7000~1万円", "1万円以上")
         )
         category = st.radio(
             "カテゴリ",
-            ("レディースファッション", "メンズファッション", "日用品雑貨・文房具・手芸")  # 追加必要
+            category_codes.keys()
         )
-        # category = 551177
-
-        asurakuflag = st.radio(
-            '翌日配送',
-            ('希望', '指定なし')
+        category_code = category_codes[category]
+        next_day_delivery = st.radio(
+            "翌日配送",
+            ("指定なし", "希望する")
         )
-        if asurakuflag == '希望':
-            asurakuarea = st.selectbox(
+        if next_day_delivery == "希望する":
+            prefec = st.selectbox(
                 "配送先の都道府県を選んでください",
-                ('北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県', '茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県', '新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県', '静岡県', '愛知県', '三重県', '滋賀県', '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県', '鳥取県', '島根県', '岡山県', '広島県', '山口県', '徳島県', '香川県', '愛媛県', '高知県', '福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県')
-            )
+                prefec_codes.keys())
+            prefec_code = prefec_codes[prefec]
         else:
-            asurakuarea = None
-        
-        # days = st.radio(
-        #     "プレゼントが届くまでの時間",
-        #     ("1日以内", "2", "3", "more")
-        # )
-        # star = st.radio(
-        #     "プレゼントのレビュー",
-        #     ("★2以上", "★3以上", "★4以上")
-        # )
-        # print(days)
+            prefec_code = None
+        wrapping = st.radio(
+            "ラッピング",
+            ('指定なし', '希望する')
+        )
 
     search_button = st.sidebar.button("検索")
     if search_button:
-        return budget, category, asurakuflag, asurakuarea
-                                # asurakuflag, asurakufarea
+        search_options.set(budget, category_code, next_day_delivery, prefec_code, wrapping)
+        return True
+
 
 def main():
-    st.title("誕生日プレゼントガチャ")
+    stc.html("""
+    <head>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">  
+    </head>
+    <body>
+        <div class = "box14">
+          <h1>　　フ<span class =  "char1">ァ</span>ニ<span class = "char2">ー</span>プレゼントアドバイザ<span class = "char3">ー</span></h1>
+        </div>
 
-    ret = sidebar()
-    prefectures = {'北海道': 1, '青森県' : 2, '岩手県': 3, '宮城県': 4, '秋田県': 5, '山形県': 6, '福島県': 7, '茨城県': 8, '栃木県': 9, '群馬県': 10, '埼玉県': 11, '千葉県': 12, '東京都': 13, '神奈川県': 14, '新潟県': 15, '富山県': 16, '石川県': 17, '福井県' : 18, '山梨県': 19, '長野県': 20, '岐阜県': 21, '静岡県': 22, '愛知県': 23, '三重県': 24, '滋賀県': 25, '京都府': 26, '大阪府': 27, '兵庫県': 28, '奈良県': 29, '和歌山県': 30, '鳥取県': 31, '島根県': 32, '岡山県': 33, '広島県': 34, '山口県': 35, '徳島県': 36, '香川県': 37, '愛媛県': 38, '高知県': 39, '福岡県': 40, '佐賀県': 41, '長崎県': 42, '熊本県': 43, '大分県': 44, '宮崎県': 45, '鹿児島県': 46, '沖縄県': 47}
+        <div class = "title">
+          <div class = "intro">
+            <a>ひだりうえのさんかくっぽいやつをおしてねぇ。</a>
+            <div class = "rotate">&#9756;</div>
+          </div>          
+        </div>
+    </body>
+
+    <style>
+    body{
+     font-family: 'Hachi Maru Pop', cursive;
+    }
+    .char1{
+        color:#00CDEA;
+    }
+    .char2{
+        color:#00CDEA;
+    }
+    .char3{
+        color:#00CDEA;
+    }
+    .rotate{
+      position:absolute;
+      left:0;
+      top:5px;
+      font-size:40px;
+      color:white;
+      transition:5s all;
+    }
+    a{
+        color:black;
+    }
+    a:hover{
+        color:#FFF218;
+    }
+    a:hover + .rotate{
+        color:#00CDEA;
+        transform:rotate(405deg);
+    }
+    
+    .title{
+        width:75%;
+        height:100px;
+    }
+    .box14{
+        width:100%;
+        height:50px;
+        padding:0em 1em;
+        margin: 0 0;
+        color: #FF4E63;
+        backgroud: #d6ebff;
+        border-bottom: solid 6px #FFF218;
+        border-radius: 9px;
+    }
+    .box14 h1{
+        margin:0;
+        padding:0;
+        font-size:40px;   
+    }
+    </style>
+    """
+    )
+    
+
+    search_options = SearchOptions()
+    ret = sidebar(search_options)
 
     if ret is not None:
-        #プレゼントの予算
-        Search_info = []
-        if(ret[0] == "1000~3000円"):
-            Search_info.append(1000)
-            Search_info.append(3000)
-        elif(ret[0] == "3000~5000円"):
-            Search_info.append(3000)
-            Search_info.append(5000)
-        elif(ret[0] == "5000~7000円"):
-            Search_info.append(5000)
-            Search_info.append(7000)
-        elif(ret[0] == "7000~1万円"):
-            Search_info.append(7000)
-            Search_info.append(10000)
-        elif(ret[0] == "1万円以上"):
-            Search_info.append(10000)
-            Search_info.append(999999999)
-        
-        if(ret[1] == "レディースファッション"):
-            Search_info.append(100371)
-        elif(ret[1] == "メンズファッション"):
-            Search_info.append(551177)
-        elif(ret[1] == "日用品雑貨・文房具・手芸"):
-            Search_info.append(215783)
-            
-        if(ret[2] == '希望'):
-            Search_info.append(1)
-        elif(ret[2] == '指定なし'):
-            Search_info.append(0)
-            
-        if(ret[3] == None):
-            Search_info.append(0)
-        else:
-            Search_info.append(prefectures[ret[3]])
-        
-        Search_info.append(ret[1])
-        # Search_info.append(ret[2])
-        print(Search_info[0],Search_info[1],Search_info[2])
+        # api.pyで検索
+        items = search_product(search_options)
 
-        #api.pyで検索
-        itemname, imageurl, itemurl, review , reviewcount= api.api(Search_info[0],Search_info[1],Search_info[2],Search_info[3],Search_info[4])
-
-        if (len(itemname) != 0):
-            #サンプルデータ
-            # data = [["かばん", "1kg", "1000円",
-            #          "https://image.rakuten.co.jp/e-smart/cabinet/shohin11/b-to-b-6936.jpg"],
-            #         ["靴", "500g", "7000円",
-            #          "https://image.rakuten.co.jp/hype/cabinet/sgazo29/7992844_1.jpg"]]
-            
-            #出力
-            for i in range(len(itemname['商品名'])):
-                st.image(imageurl[i], width=400)
-                expander = st.expander(f"プレゼント候補{i + 1}の詳細")
-                expander.markdown('###### 商品：'+ itemname['商品名'][i+1])
-                expander.markdown('###### レビュー({}件)：'.format(str(reviewcount['レビュー件数'][i+1]))+ str(review['レビュー'][i+1]))
-                expander.markdown('商品URL：'+ itemurl['商品URL'][i+1], unsafe_allow_html=True)
+        if len(items) != 0:
+            for i, item in enumerate(items):
+                st.image(item.imageUrl, width=400)
+                expander = st.expander(f"プレゼント候補 {i + 1} の詳細")
+                expander.markdown(f"###### 商品名：{item.itemName}")
+                expander.markdown(f"###### 値段：{item.itemPrice}円")
+                expander.markdown(f"###### レビュー({item.n_review}件)：{item.review}")
+                expander.markdown(f"URL：{item.itemUrl}")
+                expander.markdown(f"###### 翌日配送：{item.nextDayDelivery}")
+                if item.nextDayDelivery == "可":
+                    expander.caption("～対象地域～")
+                    expander.caption(item.asurakuArea)
         else:
             st.write("お求めの商品はありませんでした。")
     st.image("https://webservice.rakuten.co.jp/img/credit_31130.gif")
+
 
 if __name__ == "__main__":
     main()
