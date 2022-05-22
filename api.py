@@ -50,7 +50,8 @@ def reshape_result(json_result):
         n_review = item["reviewCount"]
         asuraku_flag = item["asurakuFlag"]
         asuraku_area = item["asurakuArea"]
+        item_price = item["itemPrice"]
         search_result = SearchResult(
-            item_name, item_url, image_url, review, n_review, asuraku_flag, asuraku_area)
+            item_name, item_url, image_url, review, n_review, asuraku_flag, asuraku_area, item_price)
         item_list.append(search_result)
     return item_list
