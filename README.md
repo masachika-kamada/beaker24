@@ -9,6 +9,12 @@
 
 ぜひ、[こちら](https://share.streamlit.io/hiro6260000/beaker24/main/app.py)から使用してみてください！！
 
+## 検索画面
+
+実際の検索画面です。
+
+<img width="1506" alt="スクリーンショット 2022-05-22 21 18 31" src="https://user-images.githubusercontent.com/86338341/169694739-f04d6516-5535-45ce-867a-48eb258108bc.png">
+
 ## メンバー
 
 (アルファベット順)
@@ -18,7 +24,7 @@
 - [@masachika-kamada](https://github.com/masachika-kamada)
 - [@takato256](https://github.com/takato256)
 
-##　受賞
+## 受賞
 
 第二回技育　CAMP　ハッカソン　(2022-05-22)
 
