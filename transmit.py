@@ -2,7 +2,7 @@ import re
 
 
 class SearchOptions:
-    def set(self, budget, category, next_day_delivery, prefec_code, wrapping):
+    def set(self, budget, category_code, next_day_delivery, prefec_code, wrapping):
 
         budget = budget.replace("1万", "10000")
         if "~" in budget:
@@ -13,12 +13,7 @@ class SearchOptions:
             self.minPrice = 10000
             self.maxPrice = 99999999
 
-        if category == "レディースファッション":
-            self.genreId = 100371
-        elif category == "メンズファッション":
-            self.genreId = 551177
-        elif category == "日用品雑貨・文房具・手芸":
-            self.genreId = 215783
+        self.genreId = category_code
 
         if next_day_delivery == "希望する":
             self.asurakuFlag = 1

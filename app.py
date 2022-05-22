@@ -16,6 +16,11 @@ def sidebar(search_options):
         raw = f.read()
         prefec_codes = json.loads(raw)
 
+    # カテゴリデータの読み込み
+    with open("./categories.json", mode="r", encoding="utf-8") as f:
+        raw = f.read()
+        category_codes = json.loads(raw)
+
     with st.sidebar:
         budget = st.radio(
             "プレゼントの予算",
@@ -23,8 +28,9 @@ def sidebar(search_options):
         )
         category = st.radio(
             "カテゴリ",
-            ("レディースファッション", "メンズファッション","バッグ・小物・ブランド雑貨", "ジュエリー・アクセサリー","日用品雑貨・文房具・手芸","おもちゃ","スポーツ・アウトドア","家電","食品","スイーツ・お菓子","インテリア・寝具・収納","キッチン用品・食器・調理器具","ホビー","ダイエット・健康")  # 追加必要
+            category_codes.keys()
         )
+        category_code = category_codes[category]
         next_day_delivery = st.radio(
             "翌日配送",
             ("指定なし", "希望する")
@@ -43,7 +49,7 @@ def sidebar(search_options):
 
     search_button = st.sidebar.button("検索")
     if search_button:
-        search_options.set(budget, category, next_day_delivery, prefec_code, wrapping)
+        search_options.set(budget, category_code, next_day_delivery, prefec_code, wrapping)
         return True
 
 
