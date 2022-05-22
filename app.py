@@ -68,6 +68,7 @@ def main():
                 st.image(item.imageUrl, width=400)
                 expander = st.expander(f"プレゼント候補 {i + 1} の詳細")
                 expander.markdown(f"###### 商品名：{item.itemName}")
+                expander.markdown(f"###### 値段：{item.itemPrice}円")
                 expander.markdown(f"###### レビュー({item.n_review}件)：{item.review}")
                 expander.markdown(f"URL：{item.itemUrl}")
                 expander.markdown(f"###### 翌日配送：{item.nextDayDelivery}")

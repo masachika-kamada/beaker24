@@ -30,7 +30,7 @@ class SearchOptions:
 
 class SearchResult:
     def __init__(self, item_name, item_url, image_url, review, n_review,
-                 asuraku_flag, asuraku_area):
+                 asuraku_flag, asuraku_area, item_price):
         self.itemName = item_name
         self.itemUrl = item_url
         self.imageUrl = image_url
@@ -41,3 +41,4 @@ class SearchResult:
             self.asurakuArea = asuraku_area
         else:
             self.nextDayDelivery = "不可"
+        self.itemPrice = item_price
