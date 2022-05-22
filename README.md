@@ -22,4 +22,4 @@
 
 第二回技育　CAMP　ハッカソン　(2022-05-22)
 
-[努力賞_beaker24.pdf](https://github.com/hiro6260000/beaker24/files/8749325/_beaker24.pdf)
+![努力賞_beaker24.pdf](https://github.com/hiro6260000/beaker24/files/8749325/_beaker24.pdf)
