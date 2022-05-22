@@ -6,11 +6,6 @@ import streamlit.components.v1 as stc
 
 
 def sidebar(search_options):
-    # 検索条件設定
-    #st.sidebar.write("""
-    # プレゼント設定
-    #プレゼントを贈る相手に喜んでもらえるように、条件を絞りましょう。
-    #""")
     
         
     # 都道府県データの読み込み
@@ -39,7 +34,8 @@ def sidebar(search_options):
               font-family: 'Hachi Maru Pop', cursive;
           }
         </style>
-        """)    
+        """)
+
         budget = st.radio(
             "プレゼントの予算",
             ("1000~3000円", "3000~5000円", "5000~7000円", "7000~1万円", "1万円以上")
@@ -72,7 +68,6 @@ def sidebar(search_options):
 
 
 def main():
-    #st.title("誕生日プレゼントガチャ")
     stc.html("""
     <head>
       <link rel="preconnect" href="https://fonts.googleapis.com">
