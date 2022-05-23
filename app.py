@@ -1,8 +1,9 @@
 import streamlit as st
+import streamlit.components.v1 as stc
 import json
 from api import search_product
 from transmit import SearchOptions
-import streamlit.components.v1 as stc
+import time
 
 
 def sidebar(search_options):
@@ -59,10 +60,17 @@ def main():
         title_html = f.read()
     stc.html(title_html)
 
+    # last_clickがsession_stateに追加されていない場合0で初期化
+    if "last_click" not in st.session_state:
+        st.session_state.last_click = 0
+
     search_options = SearchOptions()
     ret = sidebar(search_options)
 
-    if ret is not None:
+    # 1秒経たないと検索できないように制限
+    if ret is not None and time.time() - st.session_state.last_click > 1:
+        st.session_state.last_click = time.time()
+
         # api.pyで検索
         items = search_product(search_options)
 
