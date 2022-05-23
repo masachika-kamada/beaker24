@@ -23,7 +23,7 @@ def sidebar(search_options):
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
             <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
         </head>
-        <div class = "sidebar">
+        <div class="sidebar">
             <h1>プレゼント設定</h1>
             <p>プレゼントを贈る相手に喜んでもらえるように、条件を絞りましょう。</p>
         </div>
@@ -73,40 +73,33 @@ def main():
         <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
     </head>
     <body>
-        <div class = "box14">
+        <div class="box14">
             <h1>
-                　　フ<span class="char1">ァ</span>ニ<span class="char2">ー</span>プレゼントアドバイザ<span class="char3">ー</span>
+                　　フ<span class="blue">ァ</span>ニ<span class="blue">ー</span>プレゼントアドバイザ<span class="blue">ー</span>
             </h1>
         </div>
-
-        <div class = "title">
-            <div class = "intro">
+        <div class="title">
+            <div class="intro">
                 <a>ひだりうえのさんかくっぽいやつをおしてねぇ。</a>
-                <div class = "rotate">&#9756;</div>
+                <div class="rotate">&#9756;</div>
             </div>
         </div>
     </body>
 
     <style>
     body{
-     font-family: 'Hachi Maru Pop', cursive;
+        font-family: 'Hachi Maru Pop', cursive;
     }
-    .char1{
-        color:#00CDEA;
-    }
-    .char2{
-        color:#00CDEA;
-    }
-    .char3{
+    .blue{
         color:#00CDEA;
     }
     .rotate{
-      position:absolute;
-      left:0;
-      top:5px;
-      font-size:40px;
-      color:white;
-      transition:5s all;
+        position:absolute;
+        left:0;
+        top:5px;
+        font-size:40px;
+        color:white;
+        transition:5s all;
     }
     a{
         color:black;
