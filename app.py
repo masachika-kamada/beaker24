@@ -6,8 +6,6 @@ import streamlit.components.v1 as stc
 
 
 def sidebar(search_options):
-    
-        
     # 都道府県データの読み込み
     with open("./prefectures.json", mode="r", encoding="utf-8") as f:
         raw = f.read()
@@ -23,16 +21,16 @@ def sidebar(search_options):
         <head>
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">  
+            <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
         </head>
-        <div class = "sidebar">      
-          <h1>プレゼント設定</h1>
-          <p>プレゼントを贈る相手に喜んでもらえるように、条件を絞りましょう。</p>
+        <div class = "sidebar">
+            <h1>プレゼント設定</h1>
+            <p>プレゼントを贈る相手に喜んでもらえるように、条件を絞りましょう。</p>
         </div>
         <style>
-          .sidebar{
-              font-family: 'Hachi Maru Pop', cursive;
-          }
+            .sidebar{
+                font-family: 'Hachi Maru Pop', cursive;
+            }
         </style>
         """)
 
@@ -70,20 +68,22 @@ def sidebar(search_options):
 def main():
     stc.html("""
     <head>
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">  
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
     </head>
     <body>
         <div class = "box14">
-          <h1>　　フ<span class =  "char1">ァ</span>ニ<span class = "char2">ー</span>プレゼントアドバイザ<span class = "char3">ー</span></h1>
+            <h1>
+                　　フ<span class="char1">ァ</span>ニ<span class="char2">ー</span>プレゼントアドバイザ<span class="char3">ー</span>
+            </h1>
         </div>
 
         <div class = "title">
-          <div class = "intro">
-            <a>ひだりうえのさんかくっぽいやつをおしてねぇ。</a>
-            <div class = "rotate">&#9756;</div>
-          </div>          
+            <div class = "intro">
+                <a>ひだりうえのさんかくっぽいやつをおしてねぇ。</a>
+                <div class = "rotate">&#9756;</div>
+            </div>
         </div>
     </body>
 
@@ -118,7 +118,7 @@ def main():
         color:#00CDEA;
         transform:rotate(405deg);
     }
-    
+
     .title{
         width:75%;
         height:100px;
@@ -136,12 +136,10 @@ def main():
     .box14 h1{
         margin:0;
         padding:0;
-        font-size:40px;   
+        font-size:40px;
     }
     </style>
-    """
-    )
-    
+    """)
 
     search_options = SearchOptions()
     ret = sidebar(search_options)
